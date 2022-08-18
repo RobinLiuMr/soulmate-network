@@ -43,7 +43,31 @@ function createUser({ first_name, last_name, email, password }) {
     });
 }
 
+function login({ email, password }) {
+    return getUserByEmail(email).then((foundUser) => {
+        if (!foundUser) {
+            return null; // no email found
+        }
+
+        return bcrypt
+            .compare(password, foundUser.password_hash)
+            .then((match) => {
+                if (!match) {
+                    return null; // no password match the email
+                }
+                return foundUser;
+            });
+    });
+}
+
+function getUserByEmail(email) {
+    return db
+        .query("SELECT * FROM users WHERE email = $1", [email])
+        .then((result) => result.rows[0]);
+}
+
 module.exports = {
     getUserById,
     createUser,
+    login,
 };

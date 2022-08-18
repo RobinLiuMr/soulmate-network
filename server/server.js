@@ -5,7 +5,7 @@ const path = require("path");
 const cookieSession = require("cookie-session");
 
 // db functions
-const { getUserById, createUser } = require("./db");
+const { getUserById, createUser, login } = require("./db");
 
 // Middlewares
 
@@ -23,8 +23,9 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
 app.use(express.urlencoded({ extended: false }));
 
-// Routes
+// Route: register
 app.get("/api/users/me", (request, response) => {
+    console.log("request.session.userID", request.session.userID);
     if (!request.session.userID) {
         response.json(null);
         return;
@@ -42,12 +43,43 @@ app.post("/api/users", (request, response) => {
             response.json(newUser);
         })
         .catch((error) => {
-            // console.log("POST /api/users", error);
-            // add an error message about duplicate email TBD
+            console.log("POST /api/users", error);
+            // add an error message about duplicate email
             if (error.constraint === "users_email_key") {
                 response.status(400).json({ error: "Email already in use" });
                 return;
             }
+            response.status(500).json({ error: "Something went wrong" });
+        });
+});
+
+// Route: login
+app.get("/api/login", (request, response) => {
+    console.log("request.session.userID", request.session.userID);
+    if (!request.session.userID) {
+        response.json(null);
+        return;
+    }
+
+    getUserById(request.session.userID).then((user) => {
+        response.json(user);
+    });
+});
+
+app.post("/api/login", (request, response) => {
+    login(request.body)
+        .then((user) => {
+            if (!user) {
+                response.status(401).json({ error: "wrong credentials" });
+                return;
+            }
+
+            request.session.userID = user.id;
+            response.json(user);
+        })
+        .catch((error) => {
+            console.log("POST /api/login", error);
+
             response.status(500).json({ error: "Something went wrong" });
         });
 });

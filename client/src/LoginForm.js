@@ -1,7 +1,7 @@
 import { Component } from "react";
 import { Link } from "react-router-dom";
 
-export default class RegisterForm extends Component {
+export default class LoginForm extends Component {
     constructor(props) {
         super(props);
         this.onFormSubmit = this.onFormSubmit.bind(this);
@@ -10,13 +10,11 @@ export default class RegisterForm extends Component {
     onFormSubmit(event) {
         event.preventDefault();
         const fromData = {
-            first_name: event.target.first_name.value,
-            last_name: event.target.last_name.value,
             email: event.target.email.value,
             password: event.target.password.value,
         };
 
-        fetch(`/api/users`, {
+        fetch(`/api/login`, {
             method: "POST",
             body: JSON.stringify(fromData),
             headers: {
@@ -24,27 +22,17 @@ export default class RegisterForm extends Component {
             },
         })
             .then((response) => response.json())
-            .then((newUser) => {
-                console.log({ newUser });
+            .then((user) => {
+                console.log({ user });
                 window.location.href = "/";
             })
-            .catch((error) => console.log("post RegisterForm error", error));
+            .catch((error) => console.log("post LoginForm error", error));
     }
 
     render() {
         return (
             <div>
                 <form onSubmit={this.onFormSubmit}>
-                    <input
-                        name="first_name"
-                        required
-                        placeholder="First Name"
-                    ></input>
-                    <input
-                        name="last_name"
-                        required
-                        placeholder="Last Name"
-                    ></input>
                     <input name="email" required placeholder="Email"></input>
                     <input
                         type="password"
@@ -52,9 +40,9 @@ export default class RegisterForm extends Component {
                         required
                         placeholder="Password"
                     ></input>
-                    <button>Register</button>
+                    <button>Log in</button>
                 </form>
-                <Link to="/login">Click here to log in.</Link>
+                <Link to="/">Not register, please register in.</Link>
             </div>
         );
     }

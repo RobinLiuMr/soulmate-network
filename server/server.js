@@ -5,7 +5,13 @@ const path = require("path");
 const cookieSession = require("cookie-session");
 
 // db functions
-const { getUserById, createUser, login } = require("./db");
+const {
+    getUserById,
+    createUser,
+    login,
+    getUserByEmail,
+    createResetCode,
+} = require("./db");
 
 // Middlewares
 
@@ -25,7 +31,7 @@ app.use(express.urlencoded({ extended: false }));
 
 // Route: register
 app.get("/api/users/me", (request, response) => {
-    console.log("request.session.userID", request.session.userID);
+    // console.log("request.session.userID", request.session.userID);
     if (!request.session.userID) {
         response.json(null);
         return;
@@ -54,17 +60,17 @@ app.post("/api/users", (request, response) => {
 });
 
 // Route: login
-app.get("/api/login", (request, response) => {
-    console.log("request.session.userID", request.session.userID);
-    if (!request.session.userID) {
-        response.json(null);
-        return;
-    }
+// app.get("/api/login", (request, response) => {
+//     console.log("request.session.userID", request.session.userID);
+//     if (!request.session.userID) {
+//         response.json(null);
+//         return;
+//     }
 
-    getUserById(request.session.userID).then((user) => {
-        response.json(user);
-    });
-});
+//     getUserById(request.session.userID).then((user) => {
+//         response.json(user);
+//     });
+// });
 
 app.post("/api/login", (request, response) => {
     login(request.body)
@@ -79,6 +85,43 @@ app.post("/api/login", (request, response) => {
         })
         .catch((error) => {
             console.log("POST /api/login", error);
+
+            response.status(500).json({ error: "Something went wrong" });
+        });
+});
+
+// router: reset
+app.post("/api/reset/email", (request, response) => {
+    console.log("POST /api/reset/email");
+    // response.json({ code: "31415" });
+
+    getUserByEmail(request.body)
+        .then((user) => {
+            console.log("user", user);
+            if (!user) {
+                response
+                    .status(401)
+                    .json({ error: "this email is not registered" });
+                return;
+            }
+
+            // generate code
+            const code = "31415";
+
+            createResetCode(user.email, code)
+                .then((currentCode) => {
+                    response.json(currentCode);
+                })
+                .catch((error) => {
+                    console.log("create reset code", error);
+
+                    response
+                        .status(500)
+                        .json({ error: "Something went wrong" });
+                });
+        })
+        .catch((error) => {
+            console.log("POST /api/reset/email", error);
 
             response.status(500).json({ error: "Something went wrong" });
         });

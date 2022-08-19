@@ -33,7 +33,12 @@ export default class LoginForm extends Component {
         return (
             <div>
                 <form onSubmit={this.onFormSubmit}>
-                    <input name="email" required placeholder="Email"></input>
+                    <input
+                        type="email"
+                        name="email"
+                        required
+                        placeholder="Email"
+                    ></input>
                     <input
                         type="password"
                         name="password"
@@ -42,7 +47,7 @@ export default class LoginForm extends Component {
                     ></input>
                     <button>Log in</button>
                 </form>
-                <Link to="/">Not register, please register in.</Link>
+                <Link to="/reset">Forgot you password</Link>
             </div>
         );
     }

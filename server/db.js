@@ -60,9 +60,26 @@ function login({ email, password }) {
     });
 }
 
-function getUserByEmail(email) {
+function getUserByEmail({ email }) {
     return db
         .query("SELECT * FROM users WHERE email = $1", [email])
+        .then((result) => result.rows[0]);
+}
+
+// social-network=# SELECT * FROM reset_codes;
+//  id | email | code | timestamp
+// ----+-------+------+-----------
+
+function createResetCode(email, code) {
+    return db
+        .query(
+            `
+            INSERT INTO reset_codes (email, code)
+            VALUES ($1, $2)
+            RETURNING *
+        `,
+            [email, code]
+        )
         .then((result) => result.rows[0]);
 }
 
@@ -70,4 +87,6 @@ module.exports = {
     getUserById,
     createUser,
     login,
+    getUserByEmail,
+    createResetCode,
 };

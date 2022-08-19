@@ -45,7 +45,12 @@ export default class RegisterForm extends Component {
                         required
                         placeholder="Last Name"
                     ></input>
-                    <input name="email" required placeholder="Email"></input>
+                    <input
+                        type="email"
+                        name="email"
+                        required
+                        placeholder="Email"
+                    ></input>
                     <input
                         type="password"
                         name="password"

@@ -5,6 +5,10 @@ export default class LoginForm extends Component {
     constructor(props) {
         super(props);
         this.onFormSubmit = this.onFormSubmit.bind(this);
+
+        this.state = {
+            error: false,
+        };
     }
 
     onFormSubmit(event) {
@@ -22,9 +26,14 @@ export default class LoginForm extends Component {
             },
         })
             .then((response) => response.json())
-            .then((user) => {
-                console.log("log user", user);
-                window.location.href = "/";
+            .then((data) => {
+                if (data.error) {
+                    this.setState({
+                        error: data.error,
+                    });
+                } else {
+                    window.location.href = "/";
+                }
             })
             .catch((error) => console.log("post LoginForm error", error));
     }
@@ -32,6 +41,10 @@ export default class LoginForm extends Component {
     render() {
         return (
             <div>
+                Log in
+                {this.state.error && (
+                    <p className="error">{this.state.error}</p>
+                )}
                 <form onSubmit={this.onFormSubmit}>
                     <input
                         type="email"

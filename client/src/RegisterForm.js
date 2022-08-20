@@ -5,6 +5,10 @@ export default class RegisterForm extends Component {
     constructor(props) {
         super(props);
         this.onFormSubmit = this.onFormSubmit.bind(this);
+
+        this.state = {
+            error: false,
+        };
     }
 
     onFormSubmit(event) {
@@ -24,9 +28,14 @@ export default class RegisterForm extends Component {
             },
         })
             .then((response) => response.json())
-            .then((newUser) => {
-                console.log({ newUser });
-                window.location.href = "/";
+            .then((data) => {
+                if (data.error) {
+                    this.setState({
+                        error: data.error,
+                    });
+                } else {
+                    window.location.href = "/";
+                }
             })
             .catch((error) => console.log("post RegisterForm error", error));
     }
@@ -34,6 +43,10 @@ export default class RegisterForm extends Component {
     render() {
         return (
             <div>
+                Register
+                {this.state.error && (
+                    <p className="error">{this.state.error}</p>
+                )}
                 <form onSubmit={this.onFormSubmit}>
                     <input
                         name="first_name"

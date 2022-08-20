@@ -7,6 +7,7 @@ export default class ResetPassword extends Component {
 
         this.state = {
             step: 1,
+            error: false,
         };
 
         this.onEmailSubmit = this.onEmailSubmit.bind(this);
@@ -28,8 +29,13 @@ export default class ResetPassword extends Component {
             },
         })
             .then((response) => response.json())
-            .then((code) => {
-                console.log(code);
+            .then((data) => {
+                // console.log(data);
+                if (data.error) {
+                    this.setState({
+                        error: data.error,
+                    });
+                }
             })
             .catch((error) => console.log("post reset email error", error));
 
@@ -55,8 +61,12 @@ export default class ResetPassword extends Component {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
-                if (data.id) {
+                // console.log(data);
+                if (data.error) {
+                    this.setState({
+                        error: data.error,
+                    });
+                } else if (data.id) {
                     this.setState({
                         step: 3,
                     });
@@ -73,6 +83,9 @@ export default class ResetPassword extends Component {
             stepDisplay = (
                 <div>
                     Reset Password
+                    {this.state.error && (
+                        <p className="error">{this.state.error}</p>
+                    )}
                     <p>Please enter the email with which you registered</p>
                     <form onSubmit={this.onEmailSubmit}>
                         <input
@@ -90,6 +103,9 @@ export default class ResetPassword extends Component {
             stepDisplay = (
                 <div>
                     Reset Password
+                    {this.state.error && (
+                        <p className="error">{this.state.error}</p>
+                    )}
                     <p>Please enter the code you received</p>
                     <form onSubmit={this.onVerifySubmit}>
                         <input name="code" placeholder="Code"></input>

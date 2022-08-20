@@ -89,6 +89,7 @@ export default class ResetPassword extends Component {
                     <p>Please enter the email with which you registered</p>
                     <form onSubmit={this.onEmailSubmit}>
                         <input
+                            id="email"
                             type="email"
                             name="email"
                             required
@@ -108,7 +109,7 @@ export default class ResetPassword extends Component {
                     )}
                     <p>Please enter the code you received</p>
                     <form onSubmit={this.onVerifySubmit}>
-                        <input name="code" placeholder="Code"></input>
+                        <input id="code" name="code" placeholder="Code"></input>
                         <input
                             type="password"
                             name="password"

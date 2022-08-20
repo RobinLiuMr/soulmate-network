@@ -13,6 +13,7 @@ const {
     createResetCode,
     getCodeByEmail,
     updateUser,
+    updateUserProfilePicture,
 } = require("./db");
 
 // Middlewares
@@ -78,6 +79,25 @@ app.post("/api/login", (request, response) => {
             console.log("POST /api/login", error);
 
             response.status(500).json({ error: "Something went wrong" });
+        });
+});
+
+// router: profile load
+app.post("/api/users/profile", (request, response) => {
+    // fake url, need to replace it with multer and s3 middlewares
+    const url = `PIC_URL`;
+    // console.log("POST /api/users/profile", url);
+
+    updateUserProfilePicture({
+        ...request.session,
+        profile_picture_url: url,
+    })
+        .then((user) => {
+            response.json(user.profile_picture_url);
+        })
+        .catch((error) => {
+            console.log("POST /api/users/profile", error);
+            response.statusCode(500).json({ error: "upload image fails" });
         });
 });
 

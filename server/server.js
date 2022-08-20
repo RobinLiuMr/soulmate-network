@@ -11,6 +11,8 @@ const {
     login,
     getUserByEmail,
     createResetCode,
+    getCodeByEmail,
+    updateUser,
 } = require("./db");
 
 // Middlewares
@@ -60,17 +62,6 @@ app.post("/api/users", (request, response) => {
 });
 
 // Route: login
-// app.get("/api/login", (request, response) => {
-//     console.log("request.session.userID", request.session.userID);
-//     if (!request.session.userID) {
-//         response.json(null);
-//         return;
-//     }
-
-//     getUserById(request.session.userID).then((user) => {
-//         response.json(user);
-//     });
-// });
 
 app.post("/api/login", (request, response) => {
     login(request.body)
@@ -93,17 +84,19 @@ app.post("/api/login", (request, response) => {
 // router: reset
 app.post("/api/reset/email", (request, response) => {
     console.log("POST /api/reset/email");
-    // response.json({ code: "31415" });
 
     getUserByEmail(request.body)
         .then((user) => {
-            console.log("user", user);
+            // console.log("user", user);
             if (!user) {
                 response
                     .status(401)
                     .json({ error: "this email is not registered" });
                 return;
             }
+
+            // store the email in the cookies for verify step
+            request.session.currentEmail = user.email;
 
             // generate code
             const code = "31415";
@@ -122,6 +115,47 @@ app.post("/api/reset/email", (request, response) => {
         })
         .catch((error) => {
             console.log("POST /api/reset/email", error);
+
+            response.status(500).json({ error: "Something went wrong" });
+        });
+});
+
+app.post("/api/reset/verify", (request, response) => {
+    console.log("POST /api/reset/verify");
+    console.log(request.body);
+
+    let currentEmail = request.session.currentEmail;
+
+    getCodeByEmail({ email: currentEmail })
+        .then((fundCode) => {
+            console.log("fundCode", fundCode);
+            if (!fundCode) {
+                response
+                    .status(401)
+                    .json({ error: "no user for this code found" });
+                return;
+            }
+
+            let verifyCode = fundCode.code;
+            if (request.body.code !== verifyCode) {
+                response.status(401).json({ error: "this code not match" });
+                return;
+            }
+
+            updateUser({ email: currentEmail, password: request.body.password })
+                .then((newUser) => {
+                    response.json(newUser);
+                })
+                .catch((error) => {
+                    console.log("update password", error);
+
+                    response
+                        .status(500)
+                        .json({ error: "Something went wrong" });
+                });
+        })
+        .catch((error) => {
+            console.log("POST /api/reset/verify", error);
 
             response.status(500).json({ error: "Something went wrong" });
         });

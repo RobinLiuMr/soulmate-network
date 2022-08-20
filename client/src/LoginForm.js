@@ -23,7 +23,7 @@ export default class LoginForm extends Component {
         })
             .then((response) => response.json())
             .then((user) => {
-                console.log({ user });
+                console.log("log user", user);
                 window.location.href = "/";
             })
             .catch((error) => console.log("post LoginForm error", error));

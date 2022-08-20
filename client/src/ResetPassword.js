@@ -10,6 +10,7 @@ export default class ResetPassword extends Component {
         };
 
         this.onEmailSubmit = this.onEmailSubmit.bind(this);
+        this.onVerifySubmit = this.onVerifySubmit.bind(this);
     }
 
     onEmailSubmit(event) {
@@ -35,6 +36,33 @@ export default class ResetPassword extends Component {
         this.setState({
             step: 2,
         });
+    }
+
+    onVerifySubmit(event) {
+        event.preventDefault();
+
+        const fromData = {
+            code: event.target.code.value,
+            password: event.target.password.value,
+        };
+
+        fetch(`/api/reset/verify`, {
+            method: "POST",
+            body: JSON.stringify(fromData),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                if (data.id) {
+                    this.setState({
+                        step: 3,
+                    });
+                }
+            })
+            .catch((error) => console.log("post verify code error", error));
     }
 
     render() {
@@ -63,12 +91,11 @@ export default class ResetPassword extends Component {
                 <div>
                     Reset Password
                     <p>Please enter the code you received</p>
-                    <form>
-                        <input name="code" required placeholder="Code"></input>
+                    <form onSubmit={this.onVerifySubmit}>
+                        <input name="code" placeholder="Code"></input>
                         <input
                             type="password"
                             name="password"
-                            required
                             placeholder="Password"
                         ></input>
                         <button>Submit</button>

@@ -44,7 +44,7 @@ function createUser({ first_name, last_name, email, password }) {
 }
 
 function login({ email, password }) {
-    return getUserByEmail(email).then((foundUser) => {
+    return getUserByEmail({ email }).then((foundUser) => {
         if (!foundUser) {
             return null; // no email found
         }
@@ -70,17 +70,48 @@ function getUserByEmail({ email }) {
 //  id | email | code | timestamp
 // ----+-------+------+-----------
 
+// upsert incase multi times reset and update timestamp
 function createResetCode(email, code) {
     return db
         .query(
             `
             INSERT INTO reset_codes (email, code)
             VALUES ($1, $2)
+            ON CONFLICT (email)
+            DO UPDATE SET code = $2, created_at = CURRENT_TIMESTAMP
             RETURNING *
         `,
             [email, code]
         )
         .then((result) => result.rows[0]);
+}
+
+function getCodeByEmail({ email }) {
+    return db
+        .query(
+            `
+            SELECT * FROM reset_codes 
+            WHERE email = $1
+            
+        `,
+            [email]
+        )
+        .then((result) => result.rows[0]);
+}
+
+function updateUser({ email, password }) {
+    return hash(password).then((password_hash) => {
+        return db
+            .query(
+                `
+            UPDATE users SET password_hash = $2
+            WHERE email = $1
+            RETURNING *
+        `,
+                [email, password_hash]
+            )
+            .then((result) => result.rows[0]);
+    });
 }
 
 module.exports = {
@@ -89,4 +120,6 @@ module.exports = {
     login,
     getUserByEmail,
     createResetCode,
+    getCodeByEmail,
+    updateUser,
 };

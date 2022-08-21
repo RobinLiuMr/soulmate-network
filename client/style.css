@@ -1,7 +1,28 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     background-color: ghostwhite;
 }
 
 .error {
     color: red;
+}
+
+.profile_picture {
+    display: flex;
+    justify-content: space-between;
+}
+
+.avatar {
+    width: 100px;
+    height: 100px;
+}
+
+.picture_modal {
+    border: 2px solid red;
+    width: 500px;
+    height: 200px;
+    margin: auto;
 }

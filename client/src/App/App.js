@@ -48,9 +48,10 @@ export default class App extends Component {
                     clickFuncProps={this.onShowModal}
                     userProps={this.state.user}
                 />
-                {this.state.showModal && (
-                    <PictureModal closeFuncProps={this.onCloseModal} />
-                )}
+                <PictureModal
+                    modalState={this.state.showModal}
+                    closeFuncProps={this.onCloseModal}
+                />
             </div>
         );
     }
@@ -59,14 +60,18 @@ export default class App extends Component {
 function ProfilePicture({ clickFuncProps, userProps }) {
     return (
         <div className="profile_picture">
-            <button onClick={clickFuncProps}>
-                {userProps.profile_picture_url}
-            </button>
+            <img src="https://via.placeholder.com/150"></img>
+            <img
+                className="avatar"
+                onClick={clickFuncProps}
+                src="https://via.placeholder.com/100"
+            ></img>
+            {/* {userProps.profile_picture_url} */}
         </div>
     );
 }
 
-function PictureModal({ closeFuncProps }) {
+function PictureModal({ modalState, closeFuncProps }) {
     function onFormSubmit(event) {
         event.preventDefault();
 
@@ -84,6 +89,10 @@ function PictureModal({ closeFuncProps }) {
                 // onUpload(data);
                 console.log("fetch /api/users/profile ", data);
             });
+    }
+
+    if (!modalState) {
+        return null;
     }
 
     return (

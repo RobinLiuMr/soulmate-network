@@ -10,7 +10,7 @@ body {
     color: red;
 }
 
-.profile_picture {
+.header {
     display: flex;
     justify-content: space-between;
 }
@@ -25,4 +25,14 @@ body {
     width: 500px;
     height: 200px;
     margin: auto;
+}
+
+.logo {
+    width: 200px;
+    height: 100px;
+}
+
+.profile .avatar {
+    width: 400px;
+    height: 400px;
 }

@@ -1,4 +1,7 @@
 import { Component } from "react";
+import ProfilePicture from "./ProfilePicture";
+import PictureModal from "./PictureModal";
+import Profile from "./Profile";
 
 export default class App extends Component {
     constructor(props) {
@@ -11,6 +14,7 @@ export default class App extends Component {
 
         this.onShowModal = this.onShowModal.bind(this);
         this.onCloseModal = this.onCloseModal.bind(this);
+        this.setBio = this.setBio.bind(this);
     }
 
     onShowModal() {
@@ -22,6 +26,15 @@ export default class App extends Component {
     onCloseModal() {
         this.setState({
             showModal: false,
+        });
+    }
+
+    setBio(bioText) {
+        this.setState({
+            user: {
+                ...this.state.user,
+                bio: bioText,
+            },
         });
     }
 
@@ -42,12 +55,19 @@ export default class App extends Component {
 
     render() {
         return (
-            <div className="profile">
-                My profile
-                <ProfilePicture
-                    clickFuncProps={this.onShowModal}
-                    userProps={this.state.user}
-                />
+            <div className="app">
+                <div className="header">
+                    <img
+                        className="logo"
+                        src="https://via.placeholder.com/200x100.jpg?text=logo"
+                    ></img>
+                    <ProfilePicture
+                        clickFuncProps={this.onShowModal}
+                        userProps={this.state.user}
+                    />
+                </div>
+
+                <Profile setBio={this.setBio} userProps={this.state.user} />
                 <PictureModal
                     modalState={this.state.showModal}
                     closeFuncProps={this.onCloseModal}
@@ -55,53 +75,4 @@ export default class App extends Component {
             </div>
         );
     }
-}
-
-function ProfilePicture({ clickFuncProps, userProps }) {
-    return (
-        <div className="profile_picture">
-            <img src="https://via.placeholder.com/150"></img>
-            <img
-                className="avatar"
-                onClick={clickFuncProps}
-                src="https://via.placeholder.com/100"
-            ></img>
-            {/* {userProps.profile_picture_url} */}
-        </div>
-    );
-}
-
-function PictureModal({ modalState, closeFuncProps }) {
-    function onFormSubmit(event) {
-        event.preventDefault();
-
-        fetch("/api/users/profile", {
-            method: "POST",
-            body: new FormData(event.target),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.error) {
-                    alert("Error uploading avatar!");
-                    return;
-                }
-
-                // onUpload(data);
-                console.log("fetch /api/users/profile ", data);
-            });
-    }
-
-    if (!modalState) {
-        return null;
-    }
-
-    return (
-        <div className="picture_modal">
-            <button onClick={closeFuncProps}>X</button>
-
-            <form onSubmit={onFormSubmit}>
-                <input type="file"></input>
-            </form>
-        </div>
-    );
 }

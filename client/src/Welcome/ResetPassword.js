@@ -35,13 +35,14 @@ export default class ResetPassword extends Component {
                     this.setState({
                         error: data.error,
                     });
+                } else if (data.id) {
+                    this.setState({
+                        step: 2,
+                        error: false,
+                    });
                 }
             })
             .catch((error) => console.log("post reset email error", error));
-
-        this.setState({
-            step: 2,
-        });
     }
 
     onVerifySubmit(event) {
@@ -69,6 +70,7 @@ export default class ResetPassword extends Component {
                 } else if (data.id) {
                     this.setState({
                         step: 3,
+                        error: false,
                     });
                 }
             })
@@ -87,14 +89,17 @@ export default class ResetPassword extends Component {
                         <p className="error">{this.state.error}</p>
                     )}
                     <p>Please enter the email with which you registered</p>
-                    <form onSubmit={this.onEmailSubmit}>
-                        <input
-                            id="email"
-                            type="email"
-                            name="email"
-                            required
-                            placeholder="Email"
-                        ></input>
+                    <form key={stepState} onSubmit={this.onEmailSubmit}>
+                        <label>
+                            Email:
+                            <input
+                                id="email"
+                                type="email"
+                                name="email"
+                                required
+                                placeholder="Email"
+                            ></input>
+                        </label>
                         <button>Submit</button>
                     </form>
                 </div>
@@ -108,8 +113,15 @@ export default class ResetPassword extends Component {
                         <p className="error">{this.state.error}</p>
                     )}
                     <p>Please enter the code you received</p>
-                    <form onSubmit={this.onVerifySubmit}>
-                        <input id="code" name="code" placeholder="Code"></input>
+                    <form key={stepState} onSubmit={this.onVerifySubmit}>
+                        <label>
+                            Code:
+                            <input
+                                id="code"
+                                name="code"
+                                placeholder="Code"
+                            ></input>
+                        </label>
                         <input
                             type="password"
                             name="password"

@@ -127,6 +127,19 @@ function updateUserProfilePicture({ id, profile_picture_url }) {
         .then((result) => result.rows[0]);
 }
 
+function updateUserBio({ id, bio }) {
+    return db
+        .query(
+            `
+            UPDATE users SET bio = $2
+            WHERE id = $1
+            RETURNING *
+        `,
+            [id, bio]
+        )
+        .then((result) => result.rows[0]);
+}
+
 module.exports = {
     getUserById,
     createUser,
@@ -136,4 +149,5 @@ module.exports = {
     getCodeByEmail,
     updateUser,
     updateUserProfilePicture,
+    updateUserBio,
 };

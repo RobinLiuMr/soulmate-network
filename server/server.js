@@ -14,6 +14,7 @@ const {
     getCodeByEmail,
     updateUser,
     updateUserProfilePicture,
+    updateUserBio,
 } = require("./db");
 
 // Middlewares
@@ -82,7 +83,7 @@ app.post("/api/login", (request, response) => {
         });
 });
 
-// router: profile load
+// router: profile picture load
 app.post("/api/users/profile", (request, response) => {
     // fake url, need to replace it with multer and s3 middlewares
     const url = `PIC_URL`;
@@ -98,6 +99,21 @@ app.post("/api/users/profile", (request, response) => {
         .catch((error) => {
             console.log("POST /api/users/profile", error);
             response.statusCode(500).json({ error: "upload image fails" });
+        });
+});
+
+// router: update user bio
+app.post("/api/users/bio", (request, response) => {
+    updateUserBio({
+        id: request.session.userID,
+        ...request.body,
+    })
+        .then((bio) => {
+            response.json(bio);
+        })
+        .catch((error) => {
+            console.log("POST /api/users/bio", error);
+            response.statusCode(500).json({ error: "upload bio fails" });
         });
 });
 

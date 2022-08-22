@@ -5,8 +5,9 @@ export default class BioEditor extends Component {
         super(props);
 
         this.state = {
-            draftBio: "",
+            draftBio: "", // live display of textarea input TBD
             showEdit: false,
+            error: false,
         };
 
         this.onAddOrEdit = this.onAddOrEdit.bind(this);
@@ -30,20 +31,58 @@ export default class BioEditor extends Component {
     onSave(event) {
         event.preventDefault();
 
-        this.props.setBio("My new bio!!");
+        const fromData = {
+            bio: event.target.bio.value,
+        };
+
+        fetch(`/api/users/bio`, {
+            method: "POST",
+            body: JSON.stringify(fromData),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                // console.log("fetch /api/users/bio", data);
+                if (data.error) {
+                    this.setState({
+                        error: data.error,
+                    });
+                } else {
+                    this.props.setBio(data.bio);
+                    this.setState({
+                        showEdit: false,
+                    });
+                }
+            })
+            .catch((error) => console.log("fetch /api/users/bio", error));
     }
 
+    // live display of textarea input TBD
     render() {
         if (!this.props.bio) {
             return (
                 <div className="bio_editor">
                     <button onClick={this.onAddOrEdit}>Add Bio</button>
                     {this.state.showEdit && (
-                        <form className="edit_profile">
-                            <textarea></textarea>
-                            <button onClick={this.onSave}>Save</button>
-                            <button onClick={this.onLaterEdit}>later</button>
-                        </form>
+                        <div>
+                            <form
+                                className="edit_profile"
+                                onSubmit={this.onSave}
+                            >
+                                <textarea
+                                    name="bio"
+                                    rows="5"
+                                    cols="33"
+                                ></textarea>
+                                <button>Save</button>
+                            </form>
+                            <button onClick={this.onLaterEdit}>Later</button>
+                        </div>
+                    )}
+                    {this.state.error && (
+                        <p className="error">{this.state.error}</p>
                     )}
                 </div>
             );
@@ -53,11 +92,23 @@ export default class BioEditor extends Component {
                     {this.props.bio}
                     <button onClick={this.onAddOrEdit}>Edit Bio</button>
                     {this.state.showEdit && (
-                        <form className="edit_profile">
-                            <textarea></textarea>
-                            <button>Save</button>
-                            <button onClick={this.onLaterEdit}>later</button>
-                        </form>
+                        <div>
+                            <form
+                                className="edit_profile"
+                                onSubmit={this.onSave}
+                            >
+                                <textarea
+                                    name="bio"
+                                    rows="5"
+                                    cols="33"
+                                ></textarea>
+                                <button>Save</button>
+                            </form>
+                            <button onClick={this.onLaterEdit}>Later</button>
+                        </div>
+                    )}
+                    {this.state.error && (
+                        <p className="error">{this.state.error}</p>
                     )}
                 </div>
             );

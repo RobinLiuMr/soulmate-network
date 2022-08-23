@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { BrowserRouter, Router, NavLink } from "react-router-dom";
+import { BrowserRouter, Route, NavLink } from "react-router-dom";
 import ProfilePicture from "./ProfilePicture";
 import PictureModal from "./PictureModal";
 import Profile from "./Profile";
@@ -76,15 +76,15 @@ export default class App extends Component {
                         />
                     </header>
                     <section className="container">
-                        <Router path="/" exact>
+                        <Route path="/" exact>
                             <Profile
                                 setBio={this.setBio}
                                 userProps={this.state.user}
                             />
-                        </Router>
-                        <Router path="/people">
+                        </Route>
+                        <Route path="/people">
                             <FindPeople />
-                        </Router>
+                        </Route>
 
                         <PictureModal
                             modalState={this.state.showModal}

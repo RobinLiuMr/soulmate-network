@@ -42,7 +42,7 @@ app.get("/api/users/recent", (request, response) => {
         return;
     }
 
-    console.log("get /api/users/recent?limit=5", request.query);
+    // console.log("get /api/users/recent", request.query);
 
     getRecentUsers(request.query).then((users) => {
         response.json(users);

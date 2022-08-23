@@ -3,6 +3,7 @@ import { BrowserRouter, Router, NavLink } from "react-router-dom";
 import ProfilePicture from "./ProfilePicture";
 import PictureModal from "./PictureModal";
 import Profile from "./Profile";
+import FindPeople from "./FindPeople";
 
 export default class App extends Component {
     constructor(props) {
@@ -56,24 +57,43 @@ export default class App extends Component {
 
     render() {
         return (
-            <div className="app">
-                <div className="header">
-                    <img
-                        className="logo"
-                        src="https://via.placeholder.com/200x100.jpg?text=logo"
-                    ></img>
-                    <ProfilePicture
-                        clickFuncProps={this.onShowModal}
-                        userProps={this.state.user}
-                    />
-                </div>
+            <BrowserRouter>
+                <section className="app">
+                    <header>
+                        <img
+                            className="logo"
+                            src="https://via.placeholder.com/200x100.jpg?text=logo"
+                        ></img>
 
-                <Profile setBio={this.setBio} userProps={this.state.user} />
-                <PictureModal
-                    modalState={this.state.showModal}
-                    closeFuncProps={this.onCloseModal}
-                />
-            </div>
+                        <nav className="nav">
+                            <NavLink to="/">Home</NavLink>
+                            <NavLink to="/people">Find People</NavLink>
+                        </nav>
+
+                        <ProfilePicture
+                            clickFuncProps={this.onShowModal}
+                            userProps={this.state.user}
+                        />
+                    </header>
+                    <section className="container">
+                        <Router path="/" exact>
+                            <Profile
+                                setBio={this.setBio}
+                                userProps={this.state.user}
+                            />
+                        </Router>
+                        <Router path="/people">
+                            <FindPeople />
+                        </Router>
+
+                        <PictureModal
+                            modalState={this.state.showModal}
+                            closeFuncProps={this.onCloseModal}
+                        />
+                    </section>
+                    <footer>some footer</footer>
+                </section>
+            </BrowserRouter>
         );
     }
 }

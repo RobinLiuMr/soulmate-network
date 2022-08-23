@@ -1,4 +1,5 @@
 import { Component } from "react";
+import { BrowserRouter, Router, NavLink } from "react-router-dom";
 import ProfilePicture from "./ProfilePicture";
 import PictureModal from "./PictureModal";
 import Profile from "./Profile";

@@ -15,6 +15,8 @@ const {
     updateUser,
     updateUserProfilePicture,
     updateUserBio,
+    getRecentUsers,
+    searchUsers,
 } = require("./db");
 
 // Middlewares
@@ -32,6 +34,31 @@ app.use(compression());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
 app.use(express.urlencoded({ extended: false }));
+
+// Route: find people
+app.get("/api/users/recent", (request, response) => {
+    if (!request.session.userID) {
+        response.json(null);
+        return;
+    }
+
+    console.log("get /api/users/recent?limit=5", request.query);
+
+    getRecentUsers(request.query).then((users) => {
+        response.json(users);
+    });
+});
+
+app.get("/api/users/search", async (request, response) => {
+    if (!request.session.userID) {
+        response.json(null);
+        return;
+    }
+    const searchResults = await searchUsers(request.query);
+    response.json(
+        searchResults.filter((user) => user.id !== request.session.userID)
+    );
+});
 
 // Route: register
 app.get("/api/users/me", (request, response) => {

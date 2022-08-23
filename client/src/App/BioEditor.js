@@ -5,7 +5,7 @@ export default class BioEditor extends Component {
         super(props);
 
         this.state = {
-            draftBio: "", // live display of textarea input TBD
+            // draftBio: "", // live display of textarea input TBD
             showEdit: false,
             error: false,
         };
@@ -13,6 +13,7 @@ export default class BioEditor extends Component {
         this.onAddOrEdit = this.onAddOrEdit.bind(this);
         this.onLaterEdit = this.onLaterEdit.bind(this);
         this.onSave = this.onSave.bind(this);
+        // this.handleChange = this.handleChange.bind(this);
     }
 
     onAddOrEdit() {
@@ -27,6 +28,12 @@ export default class BioEditor extends Component {
             showEdit: false,
         });
     }
+
+    // handleChange(event) {
+    //     this.setState({
+    //         draftBio: event.target.value,
+    //     });
+    // }
 
     onSave(event) {
         event.preventDefault();
@@ -64,7 +71,12 @@ export default class BioEditor extends Component {
         if (!this.props.bio) {
             return (
                 <div className="bio_editor">
-                    <button onClick={this.onAddOrEdit}>Add Bio</button>
+                    {!this.state.showEdit && (
+                        <div>
+                            <button onClick={this.onAddOrEdit}>Add Bio</button>
+                        </div>
+                    )}
+
                     {this.state.showEdit && (
                         <div>
                             <form
@@ -89,8 +101,13 @@ export default class BioEditor extends Component {
         } else {
             return (
                 <div className="bio_editor">
-                    {this.props.bio}
-                    <button onClick={this.onAddOrEdit}>Edit Bio</button>
+                    {!this.state.showEdit && (
+                        <div>
+                            <button onClick={this.onAddOrEdit}>Edit Bio</button>
+                            <p>{this.props.bio}</p>
+                        </div>
+                    )}
+
                     {this.state.showEdit && (
                         <div>
                             <form
@@ -98,6 +115,8 @@ export default class BioEditor extends Component {
                                 onSubmit={this.onSave}
                             >
                                 <textarea
+                                    // value={this.state.draftBio}
+                                    // onChange={this.handleChange}
                                     name="bio"
                                     rows="5"
                                     cols="33"

@@ -4,9 +4,9 @@ export default function ProfilePicture({ clickFuncProps, userProps }) {
             <img
                 className="avatar"
                 onClick={clickFuncProps}
-                src="https://via.placeholder.com/400.jpg?text=avatar"
+                src={false || "https://via.placeholder.com/400.jpg?text=avatar"}
             ></img>
-            {/* {userProps.profile_picture_url} */}
+            {/* false replaced with your {userProps.profile_picture_url} */}
         </div>
     );
 }

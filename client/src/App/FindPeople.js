@@ -36,12 +36,16 @@ export default function FindPeople() {
             <section className="recent_users">
                 <h3>Who is new?</h3>
                 <ul>
-                    {recentUsers.map((user) => (
-                        <li key={user.id}>
-                            <img src={user.profile_picture_url}></img>
-                            {user.first_name} {user.last_name}
-                        </li>
-                    ))}
+                    {recentUsers.map((user) => {
+                        return (
+                            <li key={user.id}>
+                                <a href={"/users/" + user.id}>
+                                    <img src={user.profile_picture_url}></img>
+                                    {user.first_name} {user.last_name}
+                                </a>
+                            </li>
+                        );
+                    })}
                 </ul>
             </section>
             <section className="search_results">

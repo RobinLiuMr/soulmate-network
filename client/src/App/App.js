@@ -4,6 +4,7 @@ import ProfilePicture from "./ProfilePicture";
 import PictureModal from "./PictureModal";
 import Profile from "./Profile";
 import FindPeople from "./FindPeople";
+import OtherProfile from "./OtherProfile";
 
 export default class App extends Component {
     constructor(props) {
@@ -82,6 +83,11 @@ export default class App extends Component {
                                 userProps={this.state.user}
                             />
                         </Route>
+
+                        <Route path="/users/:user_id">
+                            <OtherProfile />
+                        </Route>
+
                         <Route path="/people">
                             <FindPeople />
                         </Route>

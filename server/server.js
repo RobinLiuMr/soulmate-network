@@ -37,10 +37,12 @@ app.use(express.urlencoded({ extended: false }));
 
 // Route: find people
 app.get("/api/users/recent", (request, response) => {
-    if (!request.session.userID) {
-        response.json(null);
-        return;
-    }
+    // if (!request.session.userID) {
+    //     response.json(null);
+    //     return;
+    // }
+
+    // better to attract the unsigned user here
 
     // console.log("get /api/users/recent", request.query);
 
@@ -50,17 +52,20 @@ app.get("/api/users/recent", (request, response) => {
 });
 
 app.get("/api/users/search", async (request, response) => {
-    if (!request.session.userID) {
-        response.json(null);
-        return;
-    }
+    // if (!request.session.userID) {
+    //     response.json(null);
+    //     return;
+    // }
+
+    // better to attract the unsigned user here
+
     const searchResults = await searchUsers(request.query);
     response.json(
         searchResults.filter((user) => user.id !== request.session.userID)
     );
 });
 
-// Route: register
+// Route: homepage
 app.get("/api/users/me", (request, response) => {
     // console.log("request.session.userID", request.session.userID);
     if (!request.session.userID) {
@@ -73,6 +78,31 @@ app.get("/api/users/me", (request, response) => {
     });
 });
 
+// Route: show other users
+app.get("/api/users/:user_id", (request, response) => {
+    // cannot see the detail of other users before log in
+    if (!request.session.userID) {
+        response.json(null);
+        return;
+    }
+
+    // request.params.user_id is a string
+    if (request.params.user_id == request.session.userID) {
+        response.status(401).json({ error: "this id is current logged user" });
+        return;
+    }
+
+    getUserById(request.params.user_id).then((user) => {
+        if (!user) {
+            response.status(401).json({ error: "no user with this id found" });
+            return;
+        }
+
+        response.json(user);
+    });
+});
+
+// Route: register
 app.post("/api/users", (request, response) => {
     createUser({ ...request.body })
         .then((newUser) => {

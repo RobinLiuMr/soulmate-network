@@ -16,7 +16,7 @@ export default function FindPeople() {
 
     // search term
     useEffect(() => {
-        if (searchTerm.length < 3) {
+        if (searchTerm.length < 2) {
             return;
         }
         fetch(`/api/users/search?q=${searchTerm}`)

@@ -114,7 +114,7 @@ function updateUser({ email, password }) {
     });
 }
 
-function updateUserProfilePicture({ id, profile_picture_url }) {
+function updateUserProfilePicture({ userID, profile_picture_url }) {
     return db
         .query(
             `
@@ -122,7 +122,7 @@ function updateUserProfilePicture({ id, profile_picture_url }) {
             WHERE id = $1
             RETURNING *
         `,
-            [id, profile_picture_url]
+            [userID, profile_picture_url]
         )
         .then((result) => result.rows[0]);
 }

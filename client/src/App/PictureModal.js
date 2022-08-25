@@ -1,4 +1,4 @@
-export default function PictureModal({ modalState, closeFuncProps }) {
+export default function PictureModal({ modalState, closeFuncProps, onUpload }) {
     function onFormSubmit(event) {
         event.preventDefault();
 
@@ -13,7 +13,8 @@ export default function PictureModal({ modalState, closeFuncProps }) {
                     return;
                 }
 
-                // onUpload(data);
+                onUpload(data.profile_picture_url);
+
                 console.log("fetch /api/users/profile ", data);
             });
     }
@@ -28,6 +29,7 @@ export default function PictureModal({ modalState, closeFuncProps }) {
 
             <form onSubmit={onFormSubmit}>
                 <input type="file"></input>
+                <button>Upload</button>
             </form>
         </div>
     );

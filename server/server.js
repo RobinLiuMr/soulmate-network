@@ -3,6 +3,8 @@ const app = express();
 const compression = require("compression");
 const path = require("path");
 const cookieSession = require("cookie-session");
+const { uploader } = require("./uploader");
+const { Bucket, s3Upload } = require("./s3");
 
 // db functions
 const {
@@ -141,23 +143,34 @@ app.post("/api/login", (request, response) => {
 });
 
 // router: profile picture load
-app.post("/api/users/profile", (request, response) => {
-    // fake url, need to replace it with multer and s3 middlewares
-    const url = `PIC_URL`;
-    // console.log("POST /api/users/profile", url);
+app.post(
+    "/api/users/profile",
+    uploader.single("file"),
+    s3Upload,
 
-    updateUserProfilePicture({
-        ...request.session,
-        profile_picture_url: url,
-    })
-        .then((user) => {
-            response.json(user.profile_picture_url);
+    (request, response) => {
+        // fake url, need to replace it with multer and s3 middlewares
+        // const url = `PIC_URL`;
+
+        const url = `https://s3.amazonaws.com/${Bucket}/${request.file.filename}`;
+
+        // const url = "https://picsum.photos/200";
+
+        console.log("POST /api/users/profile", url);
+
+        updateUserProfilePicture({
+            ...request.session,
+            profile_picture_url: url,
         })
-        .catch((error) => {
-            console.log("POST /api/users/profile", error);
-            response.statusCode(500).json({ error: "upload image fails" });
-        });
-});
+            .then((user) => {
+                response.json(user);
+            })
+            .catch((error) => {
+                console.log("POST /api/users/profile", error);
+                response.statusCode(500).json({ error: "upload image fails" });
+            });
+    }
+);
 
 // router: update user bio
 app.post("/api/users/bio", (request, response) => {

@@ -32,6 +32,16 @@ export default class App extends Component {
         });
     }
 
+    onUpload(url) {
+        this.setState({
+            user: {
+                ...this.state.user,
+                profile_picture_url: url,
+            },
+            showModal: false,
+        });
+    }
+
     setBio(bioText) {
         this.setState({
             user: {
@@ -50,7 +60,6 @@ export default class App extends Component {
                 this.setState({
                     user: {
                         ...user,
-                        profile_picture_url: "default_url",
                     },
                 });
             });
@@ -73,7 +82,7 @@ export default class App extends Component {
 
                         <ProfilePicture
                             clickFuncProps={this.onShowModal}
-                            userProps={this.state.user}
+                            url={this.state.user.profile_picture_url}
                         />
                     </header>
                     <section className="container">
@@ -95,6 +104,7 @@ export default class App extends Component {
                         <PictureModal
                             modalState={this.state.showModal}
                             closeFuncProps={this.onCloseModal}
+                            onUpload={this.onUpload}
                         />
                     </section>
                     <footer>some footer</footer>

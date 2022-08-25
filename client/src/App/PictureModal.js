@@ -15,7 +15,7 @@ export default function PictureModal({ modalState, closeFuncProps, onUpload }) {
 
                 onUpload(data.profile_picture_url);
 
-                console.log("fetch /api/users/profile ", data);
+                // console.log("fetch /api/users/profile ", data);
             });
     }
 
@@ -28,7 +28,7 @@ export default function PictureModal({ modalState, closeFuncProps, onUpload }) {
             <button onClick={closeFuncProps}>X</button>
 
             <form onSubmit={onFormSubmit}>
-                <input type="file"></input>
+                <input name="file" type="file"></input>
                 <button>Upload</button>
             </form>
         </div>

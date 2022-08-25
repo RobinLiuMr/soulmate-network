@@ -47,7 +47,7 @@ function s3Upload(request, response, next) {
             console.log("[socialnetwork:s3] uploading to s3");
             next();
             // delete images in folder upload
-            // fs.unlink(path, () => {});
+            fs.unlink(path, () => {});
         })
         .catch((error) => {
             console.log("[socialnetwork:s3] error uploading to s3", error);

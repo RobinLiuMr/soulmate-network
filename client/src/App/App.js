@@ -18,6 +18,7 @@ export default class App extends Component {
         this.onShowModal = this.onShowModal.bind(this);
         this.onCloseModal = this.onCloseModal.bind(this);
         this.setBio = this.setBio.bind(this);
+        this.onUpload = this.onUpload.bind(this);
     }
 
     onShowModal() {

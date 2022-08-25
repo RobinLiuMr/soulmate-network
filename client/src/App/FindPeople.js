@@ -60,8 +60,10 @@ export default function FindPeople() {
                 <ul>
                     {searchResults.map((user) => (
                         <li key={user.id}>
-                            <img src={user.profile_picture_url}></img>
-                            {user.first_name} {user.last_name}
+                            <a href={"/users/" + user.id}>
+                                <img src={user.profile_picture_url}></img>
+                                {user.first_name} {user.last_name}
+                            </a>
                         </li>
                     ))}
                 </ul>

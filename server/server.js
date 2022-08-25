@@ -116,24 +116,31 @@ app.get("/api/friendships/:user_id", async (request, response) => {
     });
 
     if (!friendship) {
-        response
-            .status(401)
-            .json({ error: "no friendship with this id found" });
+        response.json({ text: "Make Friend Request" });
         return;
     }
 
-    response.json(friendship);
+    if (friendship.accepted) {
+        response.json({ text: "End Friendship" });
+        return;
+    }
+
+    if (friendship.recipient_id == request.session.userID) {
+        response.json({ text: "Cancel Friend Request" });
+        return;
+    }
+
+    response.json({ text: "Accept Friend Request" });
 });
 
 app.post("/api/friendships/:user_id", async (request, response) => {
     // console.log("request.session", request.session);
     // console.log("request.params", request.params);
+    console.log("friendship", friendship);
     const friendship = await getCurrentFriendshipStatus({
         ...request.session,
         ...request.params,
     });
-
-    // console.log("friendship", friendship);
 
     if (!friendship) {
         const ask = await createFriendshipRequest({
@@ -141,7 +148,7 @@ app.post("/api/friendships/:user_id", async (request, response) => {
             ...request.params,
         });
 
-        response.json(ask);
+        response.json({ text: "Cancel Friend Request" });
         return;
     }
 

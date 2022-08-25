@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { useHistory } from "react-router-dom";
+import FriendshipButton from "./FriendshipButton";
 
 export default function OtherProfile() {
     let history = useHistory();
@@ -19,14 +20,15 @@ export default function OtherProfile() {
                     setUser(data);
                 }
             });
-    }, [user_id]);
+    }, []);
 
     return (
         <div className="other_profile">
-            <p key={user.id}>
+            <div key={user.id}>
                 <img src={user.profile_picture_url}></img>
                 {user.first_name} {user.last_name}
-            </p>
+                <FriendshipButton />
+            </div>
         </div>
     );
 }

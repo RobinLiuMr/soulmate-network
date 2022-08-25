@@ -166,6 +166,62 @@ function searchUsers({ q }) {
         .then((result) => result.rows);
 }
 
+// social-network=# SELECT * FROM friendships;
+//  id | sender_id | recipient_id | accepted
+// ----+-----------+--------------+----------
+
+function getCurrentFriendshipStatus({ userID, user_id }) {
+    return db
+        .query(
+            `
+        SELECT * FROM friendships
+        WHERE (recipient_id = $1 AND sender_id = $2)
+        OR (recipient_id = $2 AND sender_id = $1)
+    `,
+            [userID, user_id]
+        )
+        .then((result) => result.rows[0]);
+}
+
+function createFriendshipRequest({ userID, user_id }) {
+    return db
+        .query(
+            `
+        INSERT INTO friendships (sender_id, recipient_id, accepted)
+        VALUES ($1, $2, false)        
+        RETURNING *
+    `,
+            [userID, user_id]
+        )
+        .then((result) => result.rows[0]);
+}
+
+function acceptFriendshipRequest(id) {
+    return db
+        .query(
+            `
+        UPDATE friendships SET accepted = true
+            WHERE id = $1
+            RETURNING *
+    `,
+            [id]
+        )
+        .then((result) => result.rows[0]);
+}
+
+function deleteFriendship(id) {
+    return db
+        .query(
+            `
+        DELETE FROM friendships
+        WHERE id = $1
+        RETURNING *
+    `,
+            [id]
+        )
+        .then((result) => result.rows[0]);
+}
+
 module.exports = {
     getUserById,
     createUser,
@@ -178,4 +234,8 @@ module.exports = {
     updateUserBio,
     getRecentUsers,
     searchUsers,
+    getCurrentFriendshipStatus,
+    createFriendshipRequest,
+    deleteFriendship,
+    acceptFriendshipRequest,
 };

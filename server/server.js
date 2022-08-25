@@ -19,6 +19,10 @@ const {
     updateUserBio,
     getRecentUsers,
     searchUsers,
+    getCurrentFriendshipStatus,
+    createFriendshipRequest,
+    deleteFriendship,
+    acceptFriendshipRequest,
 } = require("./db");
 
 // Middlewares
@@ -104,6 +108,59 @@ app.get("/api/users/:user_id", (request, response) => {
     });
 });
 
+// Router: part 8 - friendship connection
+app.get("/api/friendships/:user_id", async (request, response) => {
+    const friendship = await getCurrentFriendshipStatus({
+        ...request.session,
+        ...request.params,
+    });
+
+    if (!friendship) {
+        response
+            .status(401)
+            .json({ error: "no friendship with this id found" });
+        return;
+    }
+
+    response.json(friendship);
+});
+
+app.post("/api/friendships/:user_id", async (request, response) => {
+    // console.log("request.session", request.session);
+    // console.log("request.params", request.params);
+    const friendship = await getCurrentFriendshipStatus({
+        ...request.session,
+        ...request.params,
+    });
+
+    // console.log("friendship", friendship);
+
+    if (!friendship) {
+        const ask = await createFriendshipRequest({
+            ...request.session,
+            ...request.params,
+        });
+
+        response.json(ask);
+        return;
+    }
+
+    if (friendship.accepted) {
+        const unfriend = await deleteFriendship(friendship.id);
+        response.json(unfriend);
+        return;
+    }
+
+    if (friendship.recipient_id == request.session.userID) {
+        const unfriend = await deleteFriendship(friendship.id);
+        response.json(unfriend);
+        return;
+    }
+
+    const accept = await acceptFriendshipRequest(friendship.id);
+    response.json(accept);
+});
+
 // Route: register
 app.post("/api/users", (request, response) => {
     createUser({ ...request.body })
@@ -149,12 +206,7 @@ app.post(
     s3Upload,
 
     (request, response) => {
-        // fake url, need to replace it with multer and s3 middlewares
-        // const url = `PIC_URL`;
-
         const url = `https://s3.amazonaws.com/${Bucket}/${request.file.filename}`;
-
-        // const url = "https://picsum.photos/200";
 
         console.log("POST /api/users/profile", url);
 

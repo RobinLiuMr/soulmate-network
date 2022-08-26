@@ -121,51 +121,50 @@ app.get("/api/friendships/:user_id", async (request, response) => {
     }
 
     if (friendship.accepted) {
-        response.json({ text: "End Friendship" });
+        response.json({
+            text: "End Friendship",
+            id: friendship.id,
+        });
         return;
     }
 
     if (friendship.recipient_id == request.session.userID) {
-        response.json({ text: "Cancel Friend Request" });
+        response.json({ text: "Accept Friend Request", id: friendship.id });
         return;
     }
 
-    response.json({ text: "Accept Friend Request" });
+    response.json({ text: "Cancel Friend Request", id: friendship.id });
 });
 
 app.post("/api/friendships/:user_id", async (request, response) => {
-    // console.log("request.session", request.session);
-    // console.log("request.params", request.params);
-    console.log("friendship", friendship);
-    const friendship = await getCurrentFriendshipStatus({
-        ...request.session,
-        ...request.params,
-    });
+    console.log("POST /api/friendships request.body", request.body);
 
-    if (!friendship) {
-        const ask = await createFriendshipRequest({
+    const { currentBtnText, currentId } = request.body;
+
+    if (currentBtnText === "Make Friend Request") {
+        const friendship = await createFriendshipRequest({
             ...request.session,
             ...request.params,
         });
 
-        response.json({ text: "Cancel Friend Request" });
+        response.json({ text: "Cancel Friend Request", id: friendship.id });
         return;
     }
 
-    if (friendship.accepted) {
-        const unfriend = await deleteFriendship(friendship.id);
-        response.json(unfriend);
+    if (currentBtnText === "End Friendship") {
+        await deleteFriendship(currentId);
+        response.json({ text: "Make Friend Request", id: 0 });
         return;
     }
 
-    if (friendship.recipient_id == request.session.userID) {
-        const unfriend = await deleteFriendship(friendship.id);
-        response.json(unfriend);
+    if (currentBtnText === "Cancel Friend Request") {
+        await deleteFriendship(currentId);
+        response.json({ text: "Make Friend Request", id: 0 });
         return;
     }
 
-    const accept = await acceptFriendshipRequest(friendship.id);
-    response.json(accept);
+    await acceptFriendshipRequest(currentId);
+    response.json({ text: "End Friendship", id: currentId });
 });
 
 // Route: register

@@ -15,6 +15,12 @@ header {
     justify-content: space-between;
 }
 
+.nav {
+    flex: 1;
+    display: flex;
+    justify-content: space-around;
+}
+
 .avatar {
     width: 100px;
     height: 100px;

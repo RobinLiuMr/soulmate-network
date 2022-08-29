@@ -5,6 +5,7 @@ import PictureModal from "./PictureModal";
 import Profile from "./Profile";
 import FindPeople from "./FindPeople";
 import OtherProfile from "./OtherProfile";
+import Friends from "./Friends";
 
 export default class App extends Component {
     constructor(props) {
@@ -79,6 +80,7 @@ export default class App extends Component {
                         <nav className="nav">
                             <NavLink to="/">Home</NavLink>
                             <NavLink to="/people">Find People</NavLink>
+                            <NavLink to="/friends">Friends</NavLink>
                         </nav>
 
                         <ProfilePicture
@@ -100,6 +102,10 @@ export default class App extends Component {
 
                         <Route path="/people">
                             <FindPeople />
+                        </Route>
+
+                        <Route path="/friends">
+                            <Friends />
                         </Route>
 
                         <PictureModal

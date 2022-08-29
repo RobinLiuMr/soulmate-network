@@ -23,6 +23,7 @@ const {
     createFriendshipRequest,
     deleteFriendship,
     acceptFriendshipRequest,
+    getFriendships,
 } = require("./db");
 
 // Middlewares
@@ -109,6 +110,12 @@ app.get("/api/users/:user_id", (request, response) => {
 });
 
 // Router: part 8 - friendship connection
+app.get("/api/friendships", async (request, response) => {
+    const friendships = await getFriendships(request.session.userID);
+
+    response.json(friendships);
+});
+
 app.get("/api/friendships/:user_id", async (request, response) => {
     const friendship = await getCurrentFriendshipStatus({
         ...request.session,

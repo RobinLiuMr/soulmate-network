@@ -42,3 +42,8 @@ header {
     width: 400px;
     height: 400px;
 }
+
+.messages img {
+    width: 50px;
+    height: 50px;
+}

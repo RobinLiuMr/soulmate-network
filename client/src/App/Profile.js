@@ -4,7 +4,7 @@ import BioEditor from "./BioEditor";
 export default function Profile({ userProps, setBio }) {
     return (
         <div className="profile">
-            <ProfilePicture />
+            <ProfilePicture url={userProps.profile_picture_url} />
             <strong>
                 {userProps.first_name} {userProps.last_name}
             </strong>

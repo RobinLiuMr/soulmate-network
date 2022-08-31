@@ -1,11 +1,12 @@
 const express = require("express");
-const app = express();
 const compression = require("compression");
 const path = require("path");
 const cookieSession = require("cookie-session");
+const { Server } = require("http");
+const socketConnect = require("socket.io");
+
 const { uploader } = require("./uploader");
 const { Bucket, s3Upload } = require("./s3");
-
 // db functions
 const {
     getUserById,
@@ -24,23 +25,73 @@ const {
     deleteFriendship,
     acceptFriendshipRequest,
     getFriendships,
+    getRecentChatMessages,
+    saveChatMessage,
 } = require("./db");
+
+// build app
+const app = express();
 
 // Middlewares
 
-const { SESSION_SECRET } = require("../secrets.json");
 // set up cookies
-app.use(
-    cookieSession({
-        secret: SESSION_SECRET,
-        maxAge: 1000 * 60 * 60 * 24 * 14, // two weeks of cookie validity
-    })
-);
-
+const { SESSION_SECRET } = require("../secrets.json");
+const cookieSessionMiddleware = cookieSession({
+    secret: SESSION_SECRET,
+    maxAge: 1000 * 60 * 60 * 24 * 90, // 90 days of cookie validity
+});
+app.use(cookieSessionMiddleware);
+// other middlewares
 app.use(compression());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
 app.use(express.urlencoded({ extended: false }));
+
+// set up server and socket
+const server = Server(app);
+
+const io = socketConnect(server, {
+    allowRequest: (request, callback) =>
+        callback(
+            null,
+            request.headers.referer.startsWith(`http://localhost:3000`)
+        ),
+});
+
+io.use((socket, next) => {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
+
+io.on("connection", async (socket) => {
+    console.log("[social: socket] incoming socket connection", socket.id);
+    const { userID } = socket.request.session;
+    if (!userID) {
+        return socket.disconnect(true);
+    }
+
+    // retrieve the latest 10 messages
+    const latestMessages = await getRecentChatMessages();
+    // send them when a client connects
+    socket.emit("recentMessages", latestMessages.reverse());
+
+    // listen for when the connected user send a message
+    socket.on("newMessage", async (text) => {
+        //store the message in the db
+        const newMessage = await saveChatMessage({
+            userID: userID,
+            newMessage: text,
+        });
+
+        const senderInfo = await getUserById(newMessage.sender_id);
+        // broadcast the message to all connected users
+        io.emit("broadcastMessage", {
+            ...newMessage,
+            first_name: senderInfo.first_name,
+            last_name: senderInfo.last_name,
+            profile_picture_url: senderInfo.profile_picture_url,
+        });
+    });
+});
 
 // Route: find people
 app.get("/api/users/recent", (request, response) => {
@@ -336,6 +387,6 @@ app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });
 
-app.listen(process.env.PORT || 3001, function () {
+server.listen(process.env.PORT || 3001, function () {
     console.log("I'm listening.");
 });

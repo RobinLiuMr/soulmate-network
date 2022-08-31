@@ -244,6 +244,35 @@ function getFriendships(userID) {
         .then((result) => result.rows);
 }
 
+function getRecentChatMessages(limit = 10) {
+    return db
+        .query(
+            `
+        SELECT users.first_name, users.last_name, users.profile_picture_url, chat_messages.message, chat_messages.created_at, chat_messages.id
+        FROM users
+        JOIN chat_messages
+        ON chat_messages.sender_id = users.id
+        ORDER BY chat_messages.id DESC
+        LIMIT $1
+    `,
+            [limit]
+        )
+        .then((result) => result.rows);
+}
+
+function saveChatMessage({ userID, newMessage }) {
+    return db
+        .query(
+            `
+        INSERT INTO chat_messages (sender_id, message)
+        VALUES ($1, $2)        
+        RETURNING *
+    `,
+            [userID, newMessage]
+        )
+        .then((result) => result.rows[0]);
+}
+
 module.exports = {
     getUserById,
     createUser,
@@ -261,4 +290,6 @@ module.exports = {
     deleteFriendship,
     acceptFriendshipRequest,
     getFriendships,
+    getRecentChatMessages,
+    saveChatMessage,
 };

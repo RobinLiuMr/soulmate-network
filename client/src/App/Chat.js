@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 
 let socket;
@@ -20,6 +20,7 @@ function formatDate(timestamp) {
 
 export default function Chat() {
     const [chatMessages, setChatMessages] = useState([]);
+    const lastItemRef = useRef(null);
 
     useEffect(() => {
         const socket = connect();
@@ -35,17 +36,23 @@ export default function Chat() {
         };
 
         function onRecentMessages(latestMessages) {
-            console.log("latestMessages", latestMessages);
             setChatMessages(latestMessages);
         }
 
         function onBroadcastMessage(newMessage) {
-            console.log("newMessage", newMessage);
             setChatMessages((chatMessages) => {
                 return [...chatMessages, newMessage];
             });
         }
     }, []);
+
+    useEffect(() => {
+        if (!lastItemRef.current) {
+            return;
+        }
+
+        lastItemRef.current.scrollIntoView({ behavior: "smooth" });
+    }, [chatMessages]);
 
     function onSubmit(event) {
         event.preventDefault();
@@ -59,7 +66,7 @@ export default function Chat() {
             <h2>Chat</h2>
             <ul className="messages">
                 {chatMessages.map((m) => (
-                    <li key={m.id}>
+                    <li ref={lastItemRef} key={m.id}>
                         <img src={m.profile_picture_url}></img>
                         {m.first_name} {m.last_name} {formatDate(m.created_at)}
                         <p>{m.message}</p>

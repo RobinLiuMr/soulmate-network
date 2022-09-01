@@ -7,14 +7,13 @@ import { BrowserRouter, Route } from "react-router-dom";
 export default function Welcome() {
     return (
         <div className="welcome">
-            <h1>Welcome to the social network!</h1>
             <BrowserRouter>
                 <Route path="/" exact>
-                    <RegisterForm />
+                    <LoginForm />
                 </Route>
 
-                <Route path="/login">
-                    <LoginForm />
+                <Route path="/register">
+                    <RegisterForm />
                 </Route>
 
                 <Route path="/reset">

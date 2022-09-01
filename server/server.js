@@ -63,7 +63,7 @@ io.use((socket, next) => {
 });
 
 io.on("connection", async (socket) => {
-    console.log("[social: socket] incoming socket connection", socket.id);
+    // console.log("[social: socket] incoming socket connection", socket.id);
     const { userID } = socket.request.session;
     if (!userID) {
         return socket.disconnect(true);

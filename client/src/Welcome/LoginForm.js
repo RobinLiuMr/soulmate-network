@@ -136,7 +136,7 @@ export default class LoginForm extends Component {
                                 <p className="text-sm text-gray-500">
                                     No account?
                                     <Link className="underline" to="/register">
-                                        Sign up
+                                        Register
                                     </Link>
                                 </p>
                                 <p className="text-sm text-gray-500">

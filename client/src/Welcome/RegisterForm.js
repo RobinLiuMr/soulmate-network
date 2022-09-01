@@ -56,9 +56,7 @@ export default class RegisterForm extends Component {
                         onSubmit={this.onFormSubmit}
                         className="p-8 mt-6 mb-0 rounded-lg shadow-2xl space-y-4"
                     >
-                        <p className="text-lg font-medium">
-                            Sign up to your account
-                        </p>
+                        <p className="text-lg font-medium">Register account</p>
                         <div>
                             <label
                                 htmlFor="first_name"
@@ -179,7 +177,7 @@ export default class RegisterForm extends Component {
                             Sign up
                         </button>
                         <p className="text-sm text-center text-gray-500">
-                            Have account?
+                            Have an account?
                             <Link className="underline" to="/">
                                 Log in
                             </Link>

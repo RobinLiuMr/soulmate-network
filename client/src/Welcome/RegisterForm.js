@@ -43,6 +43,7 @@ export default class RegisterForm extends Component {
     render() {
         return (
             <div className="px-4 py-16 mx-auto max-w-screen-xl sm:px-6 lg:px-8">
+                {/* based on open source from https://www.hyperui.dev/ */}
                 <div className="max-w-lg mx-auto">
                     <h1 className="text-2xl font-bold text-center text-indigo-600 sm:text-3xl">
                         Find you soulmate today!

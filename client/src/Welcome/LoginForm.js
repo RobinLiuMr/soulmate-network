@@ -41,6 +41,7 @@ export default class LoginForm extends Component {
     render() {
         return (
             <div>
+                {/* based on open source from https://www.hyperui.dev/ */}
                 <section className="relative flex flex-wrap lg:h-screen lg:items-center">
                     <div className="w-full px-4 py-12 lg:w-1/2 sm:px-6 lg:px-8 sm:py-16 lg:py-24">
                         <div className="max-w-lg mx-auto text-center">

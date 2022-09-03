@@ -45,7 +45,7 @@ export default class LoginForm extends Component {
                 <section className="relative flex flex-wrap lg:h-screen lg:items-center">
                     <div className="w-full px-4 py-12 lg:w-1/2 sm:px-6 lg:px-8 sm:py-16 lg:py-24">
                         <div className="max-w-lg mx-auto text-center">
-                            <h1 className="text-2xl font-bold sm:text-3xl">
+                            <h1 className="text-2xl text-blue-500 font-bold sm:text-3xl">
                                 Find you soulmate today!
                             </h1>
                             <p className="mt-4 text-gray-500">

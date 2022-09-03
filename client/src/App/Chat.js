@@ -62,11 +62,15 @@ export default function Chat() {
     }
 
     return (
-        <section className="chat">
-            <h2>Chat</h2>
+        <section className="chat mx-auto w-3/4">
+            <h2 className="text-lg text-teal-600 mb-4">Soul talk</h2>
             <ul className="messages">
                 {chatMessages.map((m) => (
-                    <li ref={lastItemRef} key={m.id}>
+                    <li
+                        className="divide-y divide-solid"
+                        ref={lastItemRef}
+                        key={m.id}
+                    >
                         <img src={m.profile_picture_url}></img>
                         {m.first_name} {m.last_name} {formatDate(m.created_at)}
                         <p>{m.message}</p>
@@ -75,13 +79,16 @@ export default function Chat() {
             </ul>
             <form onSubmit={onSubmit}>
                 <textarea
+                    className="mt-2 border-2 border-gray-500 w-full"
                     name="newMessage"
                     rows="2"
-                    cols="50"
+                    cols="80"
                     placeholder="Write your message..."
                     required
                 ></textarea>
-                <button>Send</button>
+                <button className="block px-5 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 transition rounded-md mt-2">
+                    Send
+                </button>
             </form>
         </section>
     );

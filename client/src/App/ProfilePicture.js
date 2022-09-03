@@ -4,7 +4,9 @@ export default function ProfilePicture({ clickFuncProps, url }) {
             <img
                 className="avatar"
                 onClick={clickFuncProps}
-                src={url || "https://via.placeholder.com/400.jpg?text=avatar"}
+                src={
+                    url || "https://via.placeholder.com/264x280.jpg?text=avatar"
+                }
             ></img>
         </div>
     );

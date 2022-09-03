@@ -2,13 +2,18 @@ export default function FriendList({ friendships, onClick }) {
     return (
         <ul>
             {friendships.map((f) => (
-                <li key={f.user_id}>
+                <li className="flex gap-8 items-center" key={f.user_id}>
                     <a href={"/users/" + f.user_id}>
                         <img src={f.profile_picture_url}></img>
-                        {f.first_name} {f.last_name}
+                        <p className="text-center">
+                            {f.first_name} {f.last_name}
+                        </p>
                     </a>
 
-                    <button onClick={() => onClick(f)}>
+                    <button
+                        className="h-10 block px-5 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 transition rounded-md"
+                        onClick={() => onClick(f)}
+                    >
                         {f.accepted
                             ? "End Friendship"
                             : "Accept Friend Request"}

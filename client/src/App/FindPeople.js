@@ -31,17 +31,23 @@ export default function FindPeople() {
     }
 
     return (
-        <section className="find_people">
-            <h2>Find People</h2>
+        <section className="find_people flex justify-around">
             <section className="recent_users">
-                <h3>Who is new?</h3>
-                <ul>
+                <h3 className="text-lg text-teal-600">Who is new?</h3>
+                <ul className="mt-4 flex flex-col gap-4">
                     {recentUsers.map((user) => {
                         return (
                             <li key={user.id}>
                                 <a href={"/users/" + user.id}>
-                                    <img src={user.profile_picture_url}></img>
-                                    {user.first_name} {user.last_name}
+                                    <img
+                                        src={
+                                            user.profile_picture_url ||
+                                            "https://via.placeholder.com/264x280.jpg?text=avatar"
+                                        }
+                                    ></img>
+                                    <p className="text-center">
+                                        {user.first_name} {user.last_name}
+                                    </p>
                                 </a>
                             </li>
                         );
@@ -49,20 +55,30 @@ export default function FindPeople() {
                 </ul>
             </section>
             <section className="search_results">
-                <h3>Looking for someone in particular?</h3>
+                <h3 className="text-lg text-teal-600">
+                    Looking for someone in particular?
+                </h3>
                 <p>
                     <input
+                        className="mt-4 w-full border-2 border-gray-500"
                         onChange={onSearch}
                         defaultValue={searchTerm}
-                        placeholder="Search for users"
+                        placeholder="Input name"
                     ></input>
                 </p>
-                <ul>
+                <ul className="mt-4 flex flex-col gap-4">
                     {searchResults.map((user) => (
                         <li key={user.id}>
                             <a href={"/users/" + user.id}>
-                                <img src={user.profile_picture_url}></img>
-                                {user.first_name} {user.last_name}
+                                <img
+                                    src={
+                                        user.profile_picture_url ||
+                                        "https://via.placeholder.com/264x280.jpg?text=avatar"
+                                    }
+                                ></img>
+                                <p className="text-center">
+                                    {user.first_name} {user.last_name}
+                                </p>
                             </a>
                         </li>
                     ))}

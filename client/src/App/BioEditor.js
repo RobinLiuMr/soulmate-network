@@ -88,9 +88,18 @@ export default class BioEditor extends Component {
                                     rows="5"
                                     cols="30"
                                 ></textarea>
-                                <button>Save</button>
+                                <div className="flex flex-row justify-around">
+                                    <button className="block px-5 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 transition rounded-md mt-4">
+                                        Save
+                                    </button>
+                                    <button
+                                        className="block px-5 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 transition rounded-md mt-4"
+                                        onClick={this.onLaterEdit}
+                                    >
+                                        Later
+                                    </button>
+                                </div>
                             </form>
-                            <button onClick={this.onLaterEdit}>Later</button>
                         </div>
                     )}
                     {this.state.error && (
@@ -102,9 +111,14 @@ export default class BioEditor extends Component {
             return (
                 <div className="bio_editor">
                     {!this.state.showEdit && (
-                        <div>
-                            <button onClick={this.onAddOrEdit}>Edit Bio</button>
+                        <div className="flex flex-col  items-center">
                             <p>{this.props.bio}</p>
+                            <button
+                                className="block px-5 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 transition rounded-md mt-4"
+                                onClick={this.onAddOrEdit}
+                            >
+                                Edit Bio
+                            </button>
                         </div>
                     )}
 
@@ -115,17 +129,26 @@ export default class BioEditor extends Component {
                                 onSubmit={this.onSave}
                             >
                                 <textarea
-                                    // value={this.state.draftBio}
-                                    // onChange={this.handleChange}
+                                    className="border-2 border-gray-500"
                                     name="bio"
                                     rows="5"
-                                    cols="33"
+                                    cols="30"
                                 ></textarea>
-                                <button>Save</button>
+                                <div className="flex flex-row justify-around">
+                                    <button className="block px-5 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 transition rounded-md mt-4">
+                                        Save
+                                    </button>
+                                    <button
+                                        className="block px-5 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 transition rounded-md mt-4"
+                                        onClick={this.onLaterEdit}
+                                    >
+                                        Later
+                                    </button>
+                                </div>
                             </form>
-                            <button onClick={this.onLaterEdit}>Later</button>
                         </div>
                     )}
+
                     {this.state.error && (
                         <p className="error">{this.state.error}</p>
                     )}

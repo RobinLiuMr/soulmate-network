@@ -65,14 +65,13 @@ export default function Friends() {
     console.log("accepted", accepted);
 
     return (
-        <section className="friends">
-            <h2>Friends</h2>
+        <section className="friends flex justify-around">
             <section className="incoming-list">
-                <h3>Incoming requests</h3>
+                <h3 className="text-lg text-teal-600">Incoming requests</h3>
                 <FriendList friendships={incoming} onClick={onClick} />
             </section>
             <section className="current-list">
-                <h3>Current friends</h3>
+                <h3 className="text-lg text-teal-600">Current soulmates</h3>
                 <FriendList friendships={accepted} onClick={onClick} />
             </section>
         </section>

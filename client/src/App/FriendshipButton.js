@@ -36,7 +36,7 @@ export default function FriendshipButton() {
     }
 
     return (
-        <div className="friendship">
+        <div className="friendship h-10 block px-5 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 transition rounded-md">
             <button onClick={onHandelClick}>{buttonText}</button>
         </div>
     );

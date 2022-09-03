@@ -181,7 +181,7 @@ export default class App extends Component {
                         </div>
                     </header>
 
-                    <section className="container flex-1 mt-24">
+                    <section className="container flex-1 mt-20">
                         <Route path="/" exact>
                             <Profile
                                 setBio={this.setBio}
@@ -211,7 +211,7 @@ export default class App extends Component {
                             onUpload={this.onUpload}
                         />
                     </section>
-                    <footer className="h-fit mb-4 text-gray-500">
+                    <footer className="h-fit mb-4 text-gray-500 px-8">
                         &copy; Highly Productive Web Developer Robin (LIU, BIN)
                     </footer>
                 </section>

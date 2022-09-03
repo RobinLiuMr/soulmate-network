@@ -23,12 +23,23 @@ export default function OtherProfile() {
     }, []);
 
     return (
-        <div className="other_profile">
-            <div key={user.id}>
-                <img src={user.profile_picture_url}></img>
-                {user.first_name} {user.last_name}
-                <FriendshipButton />
+        <div className="other_profile flex flex-col gap-8 items-center">
+            <div
+                className="profile flex flex-col gap-4 items-center w-fit"
+                key={user.id}
+            >
+                <img
+                    src={
+                        user.profile_picture_url ||
+                        "https://via.placeholder.com/264x280.jpg?text=avatar"
+                    }
+                ></img>
+                <p>
+                    {user.first_name} {user.last_name}
+                </p>
+                <p>{user.bio}</p>
             </div>
+            <FriendshipButton />
         </div>
     );
 }

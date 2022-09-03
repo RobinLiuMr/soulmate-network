@@ -66,7 +66,6 @@ export default class BioEditor extends Component {
             .catch((error) => console.log("fetch /api/users/bio", error));
     }
 
-    // live display of textarea input TBD
     render() {
         if (!this.props.bio) {
             return (
@@ -84,9 +83,10 @@ export default class BioEditor extends Component {
                                 onSubmit={this.onSave}
                             >
                                 <textarea
+                                    className="border-2 border-gray-500"
                                     name="bio"
                                     rows="5"
-                                    cols="33"
+                                    cols="30"
                                 ></textarea>
                                 <button>Save</button>
                             </form>

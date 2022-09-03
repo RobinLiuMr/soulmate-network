@@ -71,9 +71,9 @@ export default class App extends Component {
     render() {
         return (
             <BrowserRouter>
-                <section className="app">
-                    <header className="bg-white">
-                        <div className="flex items-center h-18 px-4 mx-auto max-w-screen-xl gap-8 sm:px-6 lg:px-8">
+                <section className="app flex flex-col h-screen mx-auto  max-w-screen-xl  sm:px-6 lg:px-8">
+                    <header className="bg-white h-fit">
+                        <div className="flex items-center h-18 px-4 mx-auto  max-w-screen-xl gap-8 sm:px-6 lg:px-8">
                             <NavLink className="block text-teal-600" to="/">
                                 <span className="sr-only">Home</span>
                                 <svg
@@ -99,7 +99,7 @@ export default class App extends Component {
                                     >
                                         Header navigation
                                     </h2>
-                                    <ul className="flex items-center text-sm gap-6">
+                                    <ul className="flex items-center text-base gap-6">
                                         <li>
                                             <NavLink
                                                 className="text-gray-500 transition hover:text-gray-500/75"
@@ -181,7 +181,7 @@ export default class App extends Component {
                         </div>
                     </header>
 
-                    <section className="container">
+                    <section className="container flex-1 mt-24">
                         <Route path="/" exact>
                             <Profile
                                 setBio={this.setBio}
@@ -211,7 +211,9 @@ export default class App extends Component {
                             onUpload={this.onUpload}
                         />
                     </section>
-                    <footer>some footer</footer>
+                    <footer className="h-fit mb-4 text-gray-500">
+                        &copy; Highly Productive Web Developer Robin (LIU, BIN)
+                    </footer>
                 </section>
             </BrowserRouter>
         );

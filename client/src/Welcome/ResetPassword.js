@@ -108,7 +108,7 @@ export default class ResetPassword extends Component {
                                 required
                                 placeholder="Email"
                             />
-                            <button className="absolute p-2 text-white bg-blue-600 rounded-full -translate-y-1/2 top-1/2 right-4">
+                            <button className="absolute p-2 text-white bg-teal-600 rounded-full -translate-y-1/2 top-1/2 right-4">
                                 <svg
                                     className="w-4 h-4"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -171,7 +171,7 @@ export default class ResetPassword extends Component {
                             required
                             placeholder="Password"
                         />
-                        <button className="absolute p-2 text-white bg-blue-600 rounded-full -translate-y-1/2 top-1/2 right-4">
+                        <button className="absolute p-2 text-white bg-teal-600 rounded-full -translate-y-1/2 top-1/2 right-4">
                             <svg
                                 className="w-4 h-4"
                                 xmlns="http://www.w3.org/2000/svg"

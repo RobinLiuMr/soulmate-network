@@ -21,6 +21,14 @@ export default class App extends Component {
         this.onCloseModal = this.onCloseModal.bind(this);
         this.setBio = this.setBio.bind(this);
         this.onUpload = this.onUpload.bind(this);
+        this.onLogout = this.onLogout.bind(this);
+    }
+
+    onLogout() {
+        fetch("/api/users/logout").then((response) => {
+            console.log(response);
+            window.location.href = "/";
+        });
     }
 
     onShowModal() {
@@ -136,12 +144,12 @@ export default class App extends Component {
                                 </nav>
                                 <div className="ml-6 flex items-center gap-4">
                                     <div className="sm:gap-4 sm:flex">
-                                        <a
+                                        <button
+                                            onClick={this.onLogout}
                                             className="block px-5 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 transition rounded-md"
-                                            href="#"
                                         >
                                             Logout
-                                        </a>
+                                        </button>
                                     </div>
 
                                     <a

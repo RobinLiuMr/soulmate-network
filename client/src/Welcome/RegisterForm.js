@@ -45,7 +45,7 @@ export default class RegisterForm extends Component {
             <div className="px-4 py-16 mx-auto max-w-screen-xl sm:px-6 lg:px-8">
                 {/* based on open source from https://www.hyperui.dev/ */}
                 <div className="max-w-lg mx-auto">
-                    <h1 className="text-2xl font-bold text-center text-indigo-600 sm:text-3xl">
+                    <h1 className="text-2xl font-bold text-center text-teal-600 sm:text-3xl">
                         Find you soulmate today!
                     </h1>
 
@@ -173,7 +173,7 @@ export default class RegisterForm extends Component {
                         </div>
                         <button
                             type="submit"
-                            className="block w-full px-5 py-3 text-sm font-medium text-white bg-indigo-600 rounded-lg"
+                            className="block w-full px-5 py-3 text-sm font-medium text-white bg-teal-600 rounded-lg"
                         >
                             Sign up
                         </button>

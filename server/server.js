@@ -136,6 +136,12 @@ app.get("/api/users/me", (request, response) => {
     });
 });
 
+// Route: logout
+app.get("/api/users/logout", (request, response) => {
+    request.session = null;
+    response.json("logout");
+});
+
 // Route: show other users
 app.get("/api/users/:user_id", (request, response) => {
     // cannot see the detail of other users before log in

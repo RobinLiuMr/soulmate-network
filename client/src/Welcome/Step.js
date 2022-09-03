@@ -8,11 +8,11 @@ export default function Step({ step }) {
                     <li
                         className={
                             "relative text-left " +
-                            (step === "email" && "text-blue-600")
+                            (step === "email" && "text-teal-600")
                         }
                     >
                         {step === "email" && (
-                            <span className="bg-blue-600 left-0 -bottom-[1.75rem] absolute rounded-full text-white">
+                            <span className="bg-teal-600 left-0 -bottom-[1.75rem] absolute rounded-full text-white">
                                 <svg
                                     className="w-5 h-5"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -46,11 +46,11 @@ export default function Step({ step }) {
                     <li
                         className={
                             "relative text-center " +
-                            (step === "verify" && "text-blue-600")
+                            (step === "verify" && "text-teal-600")
                         }
                     >
                         {step === "verify" && (
-                            <span className="bg-blue-600 left-1/2 -translate-x-1/2 -bottom-[1.75rem] absolute rounded-full text-white">
+                            <span className="bg-teal-600 left-1/2 -translate-x-1/2 -bottom-[1.75rem] absolute rounded-full text-white">
                                 <svg
                                     className="w-5 h-5"
                                     xmlns="http://www.w3.org/2000/svg"
@@ -89,11 +89,11 @@ export default function Step({ step }) {
                     <li
                         className={
                             "relative text-right " +
-                            (step === "success" && "text-blue-600")
+                            (step === "success" && "text-teal-600")
                         }
                     >
                         {step === "success" && (
-                            <span className="bg-blue-600 right-0 -bottom-[1.75rem] absolute rounded-full text-white">
+                            <span className="bg-teal-600 right-0 -bottom-[1.75rem] absolute rounded-full text-white">
                                 <svg
                                     className="w-5 h-5"
                                     xmlns="http://www.w3.org/2000/svg"

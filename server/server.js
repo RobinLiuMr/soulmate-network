@@ -137,7 +137,7 @@ app.get("/api/users/me", (request, response) => {
 });
 
 // Route: logout
-app.get("/api/users/logout", (request, response) => {
+app.post("/api/users/logout", (request, response) => {
     request.session = null;
     response.json("logout");
 });

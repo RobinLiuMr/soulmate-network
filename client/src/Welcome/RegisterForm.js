@@ -46,7 +46,7 @@ export default class RegisterForm extends Component {
                 {/* based on open source from https://www.hyperui.dev/ */}
                 <div className="max-w-lg mx-auto">
                     <h1 className="text-2xl font-bold text-center text-teal-600 sm:text-3xl">
-                        Find you soulmate today!
+                        Find your soulmate today!
                     </h1>
 
                     {this.state.error && (

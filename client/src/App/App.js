@@ -25,7 +25,7 @@ export default class App extends Component {
     }
 
     onLogout() {
-        fetch("/api/users/logout").then((response) => {
+        fetch("/api/users/logout", { method: "POST" }).then((response) => {
             console.log(response);
             window.location.href = "/";
         });
